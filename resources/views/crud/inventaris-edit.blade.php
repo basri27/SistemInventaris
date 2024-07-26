@@ -5,7 +5,7 @@
 @section('content')
     <div>
         <div class="container">
-            <a href="{{ route('data-inventaris') }}" class="btn btn-sm btn-secondary">Back</a>
+            <a href="{{ route('barang-masuk') }}" class="btn btn-sm btn-secondary">Back</a>
         </div>
         <div class="row">
 

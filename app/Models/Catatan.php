@@ -14,19 +14,15 @@ class Catatan extends Model
         'no_formulir',
         'edisi',
         'revisi',
-        'no_resi',
-        'no_invent',
-        'log_date',
-        'perawatan_berkala',
-        'kalibrasi',
-        'pelumasan',
-        'ganti_sparepart',
-        'overhaul',
-        'pic',
-        'ket_log'
+        'no_seri',
+        'no_invent'
     ];
 
     public function invent() {
         return $this->belongsTo(Invent::class);
+    }
+
+    public function riwayat_alat() {
+        return $this->hasMany(RiwayatAlat::class);
     }
 }

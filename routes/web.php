@@ -64,26 +64,27 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('sign-up');
 
 	Route::controller(UserController::class)->group(function() {
-		Route::get('/data-inventaris', 'dataInventaris')->name('data-inventaris');
+		Route::get('/profile', 'profil')->name('profile');
+		Route::get('/barang-masuk', 'barangMasuk')->name('barang-masuk');
+		Route::get('/barang-keluar', 'barangKeluar')->name('barang-keluar');
 		Route::get('/add-data-inventaris', 'addDataInventaris')->name('add-data-inventaris');
 		Route::get('/edit-data-inventaris-{id}', 'editDataInventaris')->name('edit-data-inventaris');
+		Route::post('/create-data-inventaris', 'createBarang')->name('create-barang');
+		Route::get('/print-barang-masuk', 'printBarangMasuk')->name('print-barang-masuk');
+		Route::get('/print-barang-keluar', 'printBarangKeluar')->name('print-barang-keluar');
+		Route::get('/catatan-riwayat-alat', 'catatanRiwayatAlat')->name('catatan-riwayat-alat');
+		Route::get('/add-catatan-riwayat-alat/{id}', 'catatanAlatAdd')->name('catatan-alat-add');
+		Route::get('/edit-catatan-riwayat-alat/{id}', 'catatanAlatEdit')->name('catatan-alat-edit');
+		Route::get('/print-riwayat-alat{id}', 'printRiwayatAlat')->name('print-riwayat-alat');
+		Route::post('/add-formulir-catatan{id}', 'addFormulirCatatan')->name('add-formulir-catatan');
+		Route::post('/create-catatan-alat{id}', 'createCatatanAlat')->name('create-catatan-alat');
+		Route::patch('/update-catatan-alat{id}', 'updateCatatanAlat')->name('update-catatan-alat');
+		Route::patch('/delete-catatan-alat{id}', 'deleteCatatanAlat')->name('delete-catatan-alat');
 	});
-
-	// Route::get('/data-inventaris', function () {
-	// 	return view('inventaris');
-	// })->name('data-inventaris');
-
-	Route::get('/catatan-riwayat-alat', function () {
-		return view('inventaris');
-	})->name('catatan-riwayat-alat');
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);
 	Route::post('/user-profile', [InfoUserController::class, 'store']);
-    // Route::get('/login', function () {
-	// 	return view('dashboard');
-	// })->name('sign-up');
-
 	Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

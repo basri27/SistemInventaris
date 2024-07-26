@@ -41,7 +41,7 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Pages</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('user-profile') ? 'active' : '' }} " href="{{ url('user-profile') }}">
+                <a class="nav-link {{ Route::is('profile') ? 'active' : '' }} " href="{{ route('profile') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1"
@@ -71,24 +71,36 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::is('data-inventaris') || Route::is('add-data-inventaris') || Route::is('edit-data-inventaris') ? 'active' : '' }}"
-                    href="{{ route('data-inventaris') }}">
+                <a class="nav-link {{ Route::is('barang-masuk') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') || Route::is('edit-data-inventaris') ? 'active' : '' }}"
+                    href="{{ route('barang-masuk') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-database ps-2 pe-2 text-center text-dark {{ Route::is('data-inventaris') || Route::is('add-data-inventaris') || Route::is('edit-data-inventaris') ? 'text-white' : 'text-dark' }} "
+                            class="fas fa-indent text-center text-dark {{ Route::is('barang-masuk') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') || Route::is('edit-data-inventaris') ? 'text-white' : 'text-dark' }} "
                             aria-hidden="true"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Data Inventaris</span>
+                    <span class="nav-link-text ms-1">Barang Masuk</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::is('barang-keluar') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') || Route::is('edit-data-inventaris') ? 'active' : '' }}"
+                    href="{{ route('barang-keluar') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-outdent text-center text-dark {{ Route::is('barang-keluar') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') || Route::is('edit-data-inventaris') ? 'text-white' : 'text-dark' }} "
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Barang Keluar</span>
                 </a>
             </li>
             <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('catatan-riwayat-alat') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('catatan-riwayat-alat') || Route::is('catatan-alat-add') || Route::is('catatan-alat-edit') ? 'active' : '' }}"
                     href="{{ url('catatan-riwayat-alat') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-clipboard ps-2 pe-2 text-center text-dark {{ Request::is('catatan-riwayat-alat') ? 'text-white' : 'text-dark' }} "
+                            class="fas fa-clipboard ps-2 pe-2 text-center text-dark {{ Request::is('catatan-riwayat-alat') || Route::is('catatan-alat-add') || Route::is('catatan-alat-edit') ? 'text-white' : 'text-dark' }} "
                             aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">Catatan Riwayat Alat</span>

@@ -17,16 +17,8 @@ return new class extends Migration
             $table->string('no_formulir')->nullable();
             $table->string('edisi')->nullable();
             $table->string('revisi')->nullable();
-            $table->string('no_resi')->nullable();
+            $table->string('no_seri')->nullable();
             $table->string('no_invent')->nullable();
-            $table->date('log_date');
-            $table->boolean('perawatan_berkala')->nullable();
-            $table->boolean('kalibrasi')->nullable();
-            $table->boolean('pelumasan')->nullable();
-            $table->boolean('ganti_sparepart')->nullable();
-            $table->boolean('overhaul')->nullable();
-            $table->string('pic')->nullable();
-            $table->string('ket_log')->nullable();
             $table->timestamps();
         });
     }
