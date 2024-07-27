@@ -1,16 +1,14 @@
 <div>
     <div class="row">
         <div class="col-12">
-
+            @if ($message = Session::get('success'))
+                <div class="alert alert-light alert-dismissable fade show d-flex justify-content-between m-4"
+                    role="alert">
+                    <strong>{{ $message }}</strong>
+                    <button type="button" class="btn-close bg-dark" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="card mb-4 mx-4">
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-light alert-dismissable fade show d-flex justify-content-between"
-                        role="alert">
-                        <strong>{{ $message }}</strong>
-                        <button type="button" class="btn-close bg-dark" data-bs-dismiss="alert"
-                            aria-label="Close"></button>
-                    </div>
-                @endif
                 <div class="card-header pb-0">
                     <div class="row">
                         <div class="col-md-3">
@@ -111,94 +109,103 @@
     </div>
 </div>
 @foreach ($invents as $item)
-    <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="delete{{ $item->id }}">
-        <div id="delete{{ $item->id }}"
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Do you want to delete this data?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <form action="{{ route('delete-barang', $item->id) }}" method="POST">
+        @method('PATCH')
+        @csrf
+        <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="delete{{ $item->id }}">
+            <div id="delete{{ $item->id }}"
+                class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Do you want to delete this data?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <th>Kode</th>
+                                <th>:</th>
+                                <td>{{ $item->kode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kelompok</th>
+                                <th>:</th>
+                                <td>{{ $item->category->kelompok }} | {{ $item->category->cat_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Uraian</th>
+                                <th>:</th>
+                                <td>{{ $item->uraian }}</td>
+                            </tr>
+                            <tr>
+                                <th>Jumlah</th>
+                                <th>:</th>
+                                <td>{{ $item->jumlah }}</td>
+                            </tr>
+                            <tr>
+                                <th>Merk</th>
+                                <th>:</th>
+                                <td>{{ $item->merk != null ? $item->merk : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Model/Type</th>
+                                <th>:</th>
+                                <td>{{ $item->model != null ? $item->model : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Supplier</th>
+                                <th>:</th>
+                                <td>{{ $item->supplier != null ? $item->supplier : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>No. Purchase Order</th>
+                                <th>:</th>
+                                <td>{{ $item->no_po != null ? $item->no_po : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tgl. Perolehan</th>
+                                <th>:</th>
+                                <td>{{ $item->tgl_perolehan != '0000-00-00' ? \Carbon\Carbon::parse($item->tgl_perolehan)->format('d F Y') : '-' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Harga</th>
+                                <th>:</th>
+                                <td>{{ $item->harga != null ? 'Rp. ' . number_format($item->harga) : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Lokasi</th>
+                                <th>:</th>
+                                <td>{{ $item->lokasi != null ? $item->lokasi : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Perolehan</th>
+                                <th>:</th>
+                                <td>{{ $item->perolehan != null ? $item->perolehan : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kondisi</th>
+                                <th>:</th>
+                                <td>{{ $item->kondisi != null ? $item->kondisi : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Ket. Barang</th>
+                                <th>:</th>
+                                <td>{{ $item->ket_invent != null ? $item->ket_invent : '-' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer pb-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Confirm</button>
+                    </div>
+
                 </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <tr>
-                            <th>Kode</th>
-                            <th>:</th>
-                            <td>{{ $item->kode }}</td>
-                        </tr>
-                        <tr>
-                            <th>Kelompok</th>
-                            <th>:</th>
-                            <td>{{ $item->category->kelompok }} | {{ $item->category->cat_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Uraian</th>
-                            <th>:</th>
-                            <td>{{ $item->uraian }}</td>
-                        </tr>
-                        <tr>
-                            <th>Jumlah</th>
-                            <th>:</th>
-                            <td>{{ $item->jumlah }}</td>
-                        </tr>
-                        <tr>
-                            <th>Merk</th>
-                            <th>:</th>
-                            <td>{{ $item->merk != null ? $item->merk : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Model/Type</th>
-                            <th>:</th>
-                            <td>{{ $item->model != null ? $item->model : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Supplier</th>
-                            <th>:</th>
-                            <td>{{ $item->supplier != null ? $item->supplier : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>No. Purchase Order</th>
-                            <th>:</th>
-                            <td>{{ $item->no_po != null ? $item->no_po : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Tgl. Perolehan</th>
-                            <th>:</th>
-                            <td>{{ $item->tgl_perolehan != '0000-00-00' ? \Carbon\Carbon::parse($item->tgl_perolehan)->format('d F Y') : '-' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Harga</th>
-                            <th>:</th>
-                            <td>{{ $item->harga != null ? 'Rp. ' . number_format($item->harga) : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Lokasi</th>
-                            <th>:</th>
-                            <td>{{ $item->lokasi != null ? $item->lokasi : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Perolehan</th>
-                            <th>:</th>
-                            <td>{{ $item->perolehan != null ? $item->perolehan : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Kondisi</th>
-                            <th>:</th>
-                            <td>{{ $item->kondisi != null ? $item->kondisi : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Ket. Barang</th>
-                            <th>:</th>
-                            <td>{{ $item->ket_invent != null ? $item->ket_invent : '-' }}</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer pb-0">
-                    <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn  btn-danger">Confirm</button>
-                </div>
+
             </div>
         </div>
-    </div>
+    </form>
 @endforeach

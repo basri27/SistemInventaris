@@ -6,10 +6,21 @@ use App\Models\Catatan;
 use App\Models\Category;
 use App\Models\Invent;
 use App\Models\RiwayatAlat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function dashboard() {
+        $todayMasuk = Invent::whereDate('tgl_perolehan', Carbon::now())->where('ket_invent', 'MASUK')->count();
+        $todayKeluar = Invent::whereDate('tgl_perolehan', Carbon::now())->where('ket_invent', 'KELUAR')->count();
+        $todayCatatan = RiwayatAlat::whereDate('tgl_riwayat', Carbon::now())->count();
+        $totalBarang = Invent::count();
+        $todaysBarang = Invent::whereDate('tgl_perolehan', Carbon::now())->orderBy('id', 'ASC')->get();
+
+        return view('dashboard', compact('todayMasuk', 'todayKeluar', 'todayCatatan', 'totalBarang', 'todaysBarang'));
+    }
+
     public function profil() {
         return view('laravel-examples/user-profile');
     }
@@ -40,7 +51,7 @@ class UserController extends Controller
     }
 
     public function createBarang(Request $request) {
-        Invent::create([
+        $invent = Invent::create([
             'category_id' => $request->input('kelompok'),
             'kode' => $request->input('kode_kelompok'),
             'uraian' => $request->input('nama_alat'),
@@ -53,15 +64,58 @@ class UserController extends Controller
             'harga' => $request->input('harga'),
             'lokasi' => $request->input('lokasi'),
             'perolehan' => $request->input('perolehan'),
-            'lokasi' => $request->input('kondisi'),
+            'kondisi' => $request->input('kondisi'),
             'ket_invent' => $request->input('ket_invent')
         ]);
 
         if($request->input('ket_invent') == 'MASUK') {
-            return redirect()->route('barang-masuk')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('barang-masuk')->with('success', 'Data berhasil ditambahkan! [Kode]: ' . $invent->kode);
         } else if($request->input('ket_input') == 'KELUAR') {
-            return redirect()->route('barang-keluar')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('barang-keluar')->with('success', 'Data berhasil ditambahkan! [Kode]: ' . $invent->kode);
         }
+    }
+
+    public function updateBarang(Request $request, $id) {
+        $invent = Invent::find($id);
+        $invent->update([
+            'category_id' => $request->input('kelompok'),
+            'kode' => $request->input('kode_kelompok'),
+            'uraian' => $request->input('nama_alat'),
+            'jumlah' => $request->input('jumlah'),
+            'merk' => $request->input('merk'),
+            'model' => $request->input('model'),
+            'supplier' => $request->input('supplier'),
+            'no_po' => $request->input('no_po'),
+            'tgl_perolehan' => $request->input('tgl_perolehan'),
+            'harga' => $request->input('harga'),
+            'lokasi' => $request->input('lokasi'),
+            'perolehan' => $request->input('perolehan'),
+            'kondisi' => $request->input('kondisi'),
+            'ket_invent' => $request->input('ket_invent')
+        ]);
+
+        if($request->input('ket_invent') == 'MASUK') {
+            return redirect()->route('barang-masuk')->with('success', 'Data berhasil diubah! [Kode]: ' . $invent->kode);
+        } else if($request->input('ket_input') == 'KELUAR') {
+            return redirect()->route('barang-keluar')->with('success', 'Data berhasil diubah! [Kode]: ' . $invent->kode);
+        }
+    }
+
+    public function deleteBarang($id) {
+        $invent = Invent::find($id);
+        $catatan = Catatan::where('invent_id', $id)->first();
+        if($catatan != null) {
+            if($catatan->riwayat_alat != null) {
+                foreach($catatan->riwayat_alat as $riwayat) {
+                    $riwayat->delete();
+                }
+            }
+            $catatan->delete();
+        }
+        
+        $invent->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus! Kode barang yang dihapus: [' . $invent->kode . ']');
     }
 
     public function printBarangMasuk() {

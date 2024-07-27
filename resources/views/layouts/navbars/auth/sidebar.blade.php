@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                <a class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1"
@@ -71,24 +71,24 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::is('barang-masuk') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') || Route::is('edit-data-inventaris') ? 'active' : '' }}"
+                <a class="nav-link {{ Route::is('barang-masuk') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') || (Route::is('edit-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') ? 'active' : '' }}"
                     href="{{ route('barang-masuk') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-indent text-center text-dark {{ Route::is('barang-masuk') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') || Route::is('edit-data-inventaris') ? 'text-white' : 'text-dark' }} "
+                            class="fas fa-indent text-center text-dark {{ Route::is('barang-masuk') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') || (Route::is('edit-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-masuk') ? 'text-white' : 'text-dark' }} "
                             aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">Barang Masuk</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::is('barang-keluar') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') || Route::is('edit-data-inventaris') ? 'active' : '' }}"
+                <a class="nav-link {{ Route::is('barang-keluar') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') || (Route::is('edit-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') ? 'active' : '' }}"
                     href="{{ route('barang-keluar') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-outdent text-center text-dark {{ Route::is('barang-keluar') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') || Route::is('edit-data-inventaris') ? 'text-white' : 'text-dark' }} "
+                            class="fas fa-outdent text-center text-dark {{ Route::is('barang-keluar') || (Route::is('add-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') || (Route::is('edit-data-inventaris') && url()->previous() == 'http://localhost/inventaris/barang-keluar') ? 'text-white' : 'text-dark' }} "
                             aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">Barang Keluar</span>

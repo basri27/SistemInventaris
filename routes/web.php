@@ -27,9 +27,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', [HomeController::class, 'home']);
-	Route::get('dashboard', function () {
-		return view('dashboard');
-	})->name('dashboard');
 
 	Route::get('billing', function () {
 		return view('billing');
@@ -64,12 +61,15 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('sign-up');
 
 	Route::controller(UserController::class)->group(function() {
+		Route::get('/dashboard', 'dashboard')->name('dashboard');
 		Route::get('/profile', 'profil')->name('profile');
 		Route::get('/barang-masuk', 'barangMasuk')->name('barang-masuk');
 		Route::get('/barang-keluar', 'barangKeluar')->name('barang-keluar');
 		Route::get('/add-data-inventaris', 'addDataInventaris')->name('add-data-inventaris');
 		Route::get('/edit-data-inventaris-{id}', 'editDataInventaris')->name('edit-data-inventaris');
 		Route::post('/create-data-inventaris', 'createBarang')->name('create-barang');
+		Route::patch('/update-data-inventaris{id}', 'updateBarang')->name('update-barang');
+		Route::patch('/delete-data-barang{id}', 'deleteBarang')->name('delete-barang');
 		Route::get('/print-barang-masuk', 'printBarangMasuk')->name('print-barang-masuk');
 		Route::get('/print-barang-keluar', 'printBarangKeluar')->name('print-barang-keluar');
 		Route::get('/catatan-riwayat-alat', 'catatanRiwayatAlat')->name('catatan-riwayat-alat');
