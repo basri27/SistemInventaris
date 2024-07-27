@@ -63,6 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::controller(UserController::class)->group(function() {
 		Route::get('/dashboard', 'dashboard')->name('dashboard');
 		Route::get('/profile', 'profil')->name('profile');
+		Route::patch('/update-user-profile', 'updateUserProfil')->name('update-profile');
+		Route::patch('/update-user-password', 'updateUserPassword')->name('update-password');
 		Route::get('/barang-masuk', 'barangMasuk')->name('barang-masuk');
 		Route::get('/barang-keluar', 'barangKeluar')->name('barang-keluar');
 		Route::get('/add-data-inventaris', 'addDataInventaris')->name('add-data-inventaris');

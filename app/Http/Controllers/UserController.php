@@ -6,8 +6,11 @@ use App\Models\Catatan;
 use App\Models\Category;
 use App\Models\Invent;
 use App\Models\RiwayatAlat;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -23,6 +26,40 @@ class UserController extends Controller
 
     public function profil() {
         return view('laravel-examples/user-profile');
+    }
+
+    public function updateUserProfil(Request $request) {
+        $password = Hash::check($request->input('password'), Auth::user()->password);
+        if ($password == false) {
+            return redirect()->back()->with('update-profile-error', 'Password yang Anda masukkan Salah!');
+        }elseif ($password == true) {
+            $user = User::find(Auth::user()->id);
+            $user->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email')
+            ]);
+
+            return redirect()->back()->with('update-profile-success', 'Profil berhasil diperbaharui!');
+        }
+    }
+
+    public function updateUserPassword(Request $request) {
+        $password = Hash::check($request->input('current_password'), Auth::user()->password);
+        if ($password == false) {
+            return redirect()->back()->with('update-password-error', 'Password yang Anda masukkan Salah!');
+        }elseif ($password == true) {
+            $this->validate($request, [
+                'new_password' => 'string|min:8',
+                'confirm_password' => 'min:8|same:new_password'
+            ]);
+
+            $user = User::find(Auth::user()->id);
+            $user->update([
+                'password' => Hash::make($request->input('new_password'))
+            ]);
+
+            return redirect()->back()->with('success-password', 'Password has change!');
+        }
     }
     
     public function barangMasuk() {
@@ -112,7 +149,7 @@ class UserController extends Controller
             }
             $catatan->delete();
         }
-        
+
         $invent->delete();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus! Kode barang yang dihapus: [' . $invent->kode . ']');

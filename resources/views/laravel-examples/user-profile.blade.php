@@ -110,22 +110,23 @@
                     <h6 class="mb-0">{{ __('Profile Information') }}</h6>
                 </div>
                 <div class="card-body pt-4 p-3 ">
-                    <form action="/user-profile" method="POST" role="form text-left">
+                    <form action="{{ route('update-profile') }}" method="POST" role="form text-left">
+                        @method('PATCH')
                         @csrf
-                        @if ($errors->any())
-                            <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+                        @if (session('update-profile-error'))
+                            <div class="mt-3 alert alert-danger alert-dismissible fade show" role="alert">
                                 <span class="alert-text text-white">
-                                    {{ $errors->first() }}</span>
+                                    {{ session('update-profile-error') }}
+                                </span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     <i class="fa fa-close" aria-hidden="true"></i>
                                 </button>
                             </div>
                         @endif
-                        @if (session('success'))
-                            <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success"
-                                role="alert">
+                        @if (session('update-profile-success'))
+                            <div class="mt-3 alert alert-success alert-dismissible fade show" role="alert">
                                 <span class="alert-text text-white">
-                                    {{ session('success') }}</span>
+                                    {{ session('update-profile-success') }}</span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     <i class="fa fa-close" aria-hidden="true"></i>
                                 </button>
@@ -136,8 +137,8 @@
                                 <div class="form-group">
                                     <label for="user-name" class="form-control-label">{{ __('Full Name') }}</label>
                                     <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                        <input class="form-control" value="{{ auth()->user()->name }}" type="text"
-                                            placeholder="Name" id="user-name" name="name">
+                                        <input class="form-control" value="{{ old('name', auth()->user()->name) }}"
+                                            type="text" placeholder="Name" id="user-name" name="name">
                                         @error('name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -148,8 +149,8 @@
                                 <div class="form-group">
                                     <label for="user-email" class="form-control-label">{{ __('Email') }}</label>
                                     <div class="@error('email')border border-danger rounded-3 @enderror">
-                                        <input class="form-control" value="{{ auth()->user()->email }}" type="email"
-                                            placeholder="@example.com" id="user-email" name="email">
+                                        <input class="form-control" value="{{ old('email', auth()->user()->email) }}"
+                                            type="email" placeholder="@example.com" id="user-email" name="email">
                                         @error('email')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -163,7 +164,7 @@
                                     <label for="user.phone" class="form-control-label">{{ __('Role') }}</label>
                                     <div class="@error('user.phone')border border-danger rounded-3 @enderror">
                                         <input class="form-control text-capitalize" type="text"
-                                            placeholder="40770888444" value="{{ auth()->user()->role }}" disabled>
+                                            value="{{ auth()->user()->role }}" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -172,8 +173,8 @@
                                     <label for="user.location"
                                         class="form-control-label">{{ __('Your Password') }}</label>
                                     <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                        <input class="form-control" type="password" placeholder="Your Password"
-                                            name="password" required>
+                                        <input class="form-control @if (session('update-profile-error')) is-invalid @endif"
+                                            type="password" placeholder="Your Password" name="password" required>
                                     </div>
                                 </div>
                             </div>
@@ -190,22 +191,36 @@
                     <h6 class="mb-0">{{ __('Change Password') }}</h6>
                 </div>
                 <div class="card-body pt-4 p-3 ">
-                    <form action="/user-profile" method="POST" role="form text-left">
+                    <form action="{{ route('update-password') }}" method="POST" role="form text-left">
+                        @method('PATCH')
                         @csrf
-                        @if ($errors->any())
-                            <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+                        @if (session('update-password-error'))
+                            <div class="mt-3  alert alert-danger alert-dismissible fade show" role="alert">
                                 <span class="alert-text text-white">
-                                    {{ $errors->first() }}</span>
+                                    {{ session('update-password-error') }}
+                                </span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     <i class="fa fa-close" aria-hidden="true"></i>
                                 </button>
                             </div>
                         @endif
-                        @if (session('success'))
-                            <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success"
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                                <div class="mt-3  alert alert-danger alert-dismissible fade show" role="alert">
+                                    <span class="alert-text text-white">
+                                        {{ $error }}
+                                    </span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                        <i class="fa fa-close" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            @endforeach
+                        @endif
+                        @if (session('update-password-success'))
+                            <div class="mt-3  alert alert-success alert-dismissible fade show" id="alert-success"
                                 role="alert">
                                 <span class="alert-text text-white">
-                                    {{ session('success') }}</span>
+                                    {{ session('update-profile-success') }}</span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     <i class="fa fa-close" aria-hidden="true"></i>
                                 </button>
@@ -217,11 +232,13 @@
                                     <label for="user-name"
                                         class="form-control-label">{{ __('Current Password') }}</label>
                                     <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                        <input class="form-control" type="password" placeholder="Your Current Password"
-                                            id="user-name" name="name">
-                                        @error('name')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
+                                        <input class="form-control @if (session('update-password-error')) is-invalid @endif"
+                                            type="password" placeholder="Your Current Password" name="current_password">
+                                        @if (session('update-password-error'))
+                                            <p class="text-danger text-xs mt-2">
+                                                {{ session('update-password-error') }}
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -229,9 +246,9 @@
                                 <div class="form-group">
                                     <label for="user-email" class="form-control-label">{{ __('New Password') }}</label>
                                     <div class="@error('email')border border-danger rounded-3 @enderror">
-                                        <input class="form-control" type="password" placeholder="New Password"
-                                            id="user-email" name="email">
-                                        @error('email')
+                                        <input class="form-control @error('new_password') is-invalid @enderror"
+                                            type="password" placeholder="New Password" name="new_password">
+                                        @error('new-password')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -244,8 +261,12 @@
                                     <label for="user.phone"
                                         class="form-control-label">{{ __('Confirm Password') }}</label>
                                     <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                        <input class="form-control text-capitalize" type="password"
-                                            placeholder="New Password Confirmation">
+                                        <input class="form-control @error('confirm_password') is-invalid @enderror"
+                                            type="password" placeholder="New Password Confirmation"
+                                            name="confirm_password">
+                                        @error('confirm_password')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
