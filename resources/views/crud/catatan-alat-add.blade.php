@@ -76,7 +76,7 @@
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
 
-                            <div class="table-responsive">
+                            <div class="table-responsive mb-2">
                                 <table
                                     class="table table-bordered border border-dark text-xs text-dark w-auto align-middle mt-0 m-4">
                                     <tr>
@@ -203,6 +203,17 @@
                                     @endforeach
                                     <tr></tr>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-end text-center">
+                                <p class="text-xs fw-bold m-4">
+                                    Muara Teweh,
+                                    {{ \Carbon\Carbon::parse(\Carbon\Carbon::now())->format('d F Y') }}
+                                    <br>
+                                    For and on behalf of<br>
+                                    PT.CURVEYOR CARBON CONSULTING INDONESIA<br><br><br><br><br>
+                                    <u>Akhsan Huzaimah</u><br>
+                                    Branch Manager
+                                </p>
                             </div>
                         </div>
                     </div>

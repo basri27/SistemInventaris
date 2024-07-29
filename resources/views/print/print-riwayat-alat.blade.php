@@ -8,24 +8,19 @@
     <title>Catatan Riwayat Alat</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-scci.png') }}">
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    {{-- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script> --}}
+    <script src="{{ asset('js/font-awesome.js') }}"></script>
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
     {{-- DataTables --}}
     <link rel="stylesheet" href="//cdn.datatables.net/2.1.0/css/dataTables.dataTables.min.css">
 </head>
 
-<body onload="window.print()">
+<body onload="printWindow()">
     <div class="mt-4">
         <div class="row">
             <div class="col-12">
-                @if ($catatan == null)
-                    <div class="mb-3">
-
-                    </div>
-                    <hr class="horizontal dark">
-                @endif
-                <div>
+                <div class="mb-2">
                     <table
                         class="table table-bordered border border-dark text-sm text-dark w-auto align-middle mt-0 m-4">
                         <tr>
@@ -156,10 +151,27 @@
                         <tr></tr>
                     </table>
                 </div>
+                <div class="d-flex justify-content-end text-center">
+                    <p class="text-xs fw-bold m-4">
+                        Muara Teweh,
+                        {{ \Carbon\Carbon::parse(\Carbon\Carbon::now())->format('d F Y') }}
+                        <br>
+                        For and on behalf of<br>
+                        PT.CURVEYOR CARBON CONSULTING INDONESIA<br><br><br><br><br>
+                        <u>Akhsan Huzaimah</u><br>
+                        Branch Manager
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-
+    <script>
+        function printWindow() {
+            setTimeout(() => {
+                window.print();
+            }, 2000);
+        }
+    </script>
 </body>
 
 </html>

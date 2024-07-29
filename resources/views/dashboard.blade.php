@@ -104,7 +104,7 @@
                             <h6>Daftar Alat/Barang Masuk dan Keluar Hari Ini</h6>
                             <p class="text-sm mb-0">
                                 <i class="fa fa-check text-info" aria-hidden="true"></i>
-                                <span class="font-weight-bold ms-1">{{ $todayMasuk + $todayKeluar }}</span> this month
+                                <span class="font-weight-bold ms-1">{{ $todayMasuk + $todayKeluar }}</span> barang hari ini
                             </p>
                         </div>
                     </div>
